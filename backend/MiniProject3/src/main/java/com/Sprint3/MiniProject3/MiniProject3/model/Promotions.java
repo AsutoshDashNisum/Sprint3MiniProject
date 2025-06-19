@@ -14,4 +14,6 @@ public class Promotions {
     private String description;
 
     private Double promoAmount;
+
+
 }

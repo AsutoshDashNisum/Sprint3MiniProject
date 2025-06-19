@@ -4,7 +4,9 @@ import com.Sprint3.MiniProject3.MiniProject3.model.Promotions;
 import com.Sprint3.MiniProject3.MiniProject3.repository.PromotionsRepository;
 import com.Sprint3.MiniProject3.MiniProject3.service.PromotionService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PromotionServiceImpl implements PromotionService {
@@ -25,4 +27,36 @@ public class PromotionServiceImpl implements PromotionService {
         return repository.save(promo);
     }
 
+    @Override
+    public Promotions updatePromotion(Integer id, Promotions promo) {
+        return null;
+    }
+
+    @Override
+    public void deletePromotion(Integer id) {
+
+    }
+
+    @Override
+    public Promotions updatePromotion(String promoCode, Promotions promo) {
+        Optional<Promotions> existing = repository.findById(promoCode);
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Promotion with code " + promoCode + " not found");
+        }
+
+        Promotions existingPromo = existing.get();
+        existingPromo.setPromoType(promo.getPromoType());
+        existingPromo.setDescription(promo.getDescription());
+        existingPromo.setPromoAmount(promo.getPromoAmount());
+
+        return repository.save(existingPromo);
+    }
+
+    @Override
+    public void deletePromotion(String promoCode) {
+        if (!repository.existsById(promoCode)) {
+            throw new RuntimeException("Promotion with code " + promoCode + " does not exist");
+        }
+        repository.deleteById(promoCode);
+    }
 }
